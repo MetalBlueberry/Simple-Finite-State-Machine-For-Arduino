@@ -18,8 +18,8 @@ void FSM::add(Transition* t){
 
 /*void FSM::reserve(int s,int t)
 {
-	States.reserve(s);
-	Transitions.reserve(t);
+States.reserve(s);
+Transitions.reserve(t);
 }*/
 
 void FSM::Run()
@@ -50,7 +50,9 @@ void FSM::Run()
 	for (unsigned int i = 0; i < States.size();i++)
 	{
 		if(!s[i]->_lastState && s[i]->_thisState){
+			#ifdef FSM_CONTROL_DE_TIEMPO
 			s[i]->InternalIn();
+			#endif
 			if(s[i]->In != nullptr){
 				s[i]->In(s[i]);
 			}

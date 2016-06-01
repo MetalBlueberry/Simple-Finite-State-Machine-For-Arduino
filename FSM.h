@@ -19,6 +19,7 @@ Entes de empezar a funcionar se han de activar manualmente algunas fases utiliza
 Para empezar a ejecutar la maquina hay que llamar al metodo estatico FSM::Run():
 
 *************************************************/
+#define FSM_MACROS
 
 
 #ifndef FSM_h
@@ -37,6 +38,29 @@ Para empezar a ejecutar la maquina hay que llamar al metodo estatico FSM::Run():
 #define DFloat(s,n)
 #define StartDebug(s)
 #endif
+
+//Definir FSM_MACROS si se quieren utilizar los macros para simplificar la programación
+#ifdef FSM_MACROS
+#define FSM_RUN FSM::Run();
+#define FSM_STATE_FUNCTION(nombre) void nombre (State* s)
+#define FSM_STATE(nombre, In,Run,Out) \
+State nombre(In,Run,Out)
+#define FSM_INITIAL_STATE(nombre) nombre.nextState = true
+#define FSM_TRANSITION_CONDITION_MULTI(nombre) bool nombre(State* from,unsigned char from_length,State* to,unsigned char to_length)
+#define FSM_TRANSITION_CONDITION(funcion) \
+bool funcion ## _aux(State from, State to);\
+bool funcion(State* from,unsigned char from_length,State* to,unsigned char to_length){\
+	funcion ## _aux(from[0],to[0]);\
+}\
+bool funcion ## _aux(State from, State to)
+#define FSM_TRANSITION_MULTI(nombre,from,from_length,to,to_length,condition)\
+Transition nombre(&from,from_length,&to,to_length,condition)
+#define FSM_TRANSITION(nombre, from, to, condition)\
+Transition nombre(&from,1,&to,1,condition)
+#define FSM_TRANSITION_NOW(from, to)\
+Transition::now(&from,&to)
+#endif
+
 
 //#include "QueueList/QueueList.h"
 #include "State.h"

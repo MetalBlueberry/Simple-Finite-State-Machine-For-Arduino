@@ -19,10 +19,8 @@ class Transition
 	void Execute();
 
 	State** _from;
-	//State** _fromArray;
 	unsigned char _fromCount;
 	State** _to;
-	//State** _toArray;
 	unsigned char _toCount;
 	bool (*_condition)(State*,unsigned char,State*,unsigned char);
 	bool CheckForeach(State** array, unsigned char count);
