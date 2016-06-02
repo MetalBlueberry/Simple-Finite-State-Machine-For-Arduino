@@ -19,10 +19,12 @@ Entes de empezar a funcionar se han de activar manualmente algunas fases utiliza
 Para empezar a ejecutar la maquina hay que llamar al metodo estatico FSM::Run():
 
 *************************************************/
-#define FSM_MACROS 
+
 
 
 #ifndef FSM_h
+
+#define FSM_MACROS
 #define  FSM_h
 
 
@@ -55,7 +57,6 @@ bool funcion ()
 
 
 #define NUMARGS(...)  (sizeof((State*[]){__VA_ARGS__})/sizeof(State*))
-	
 #define FSM_PREVIOUS_STATES(...)  (FSM::AndAll(NUMARGS(__VA_ARGS__), __VA_ARGS__))
 #define FSM_FROM_STATES(...)  (FSM::ClearAll(NUMARGS(__VA_ARGS__), __VA_ARGS__))
 #define FSM_TO_STATES(...)  (FSM::SetAll(NUMARGS(__VA_ARGS__), __VA_ARGS__))
@@ -67,45 +68,57 @@ bool nombre ## _conditions(){\
 void nombre ## _actions(){\
 	FSM_FROM_STATES(__VA_ARGS__)
 	
-#define FSM_TRANSITION_MULTI_ACTIONS(nombre,...)\
-FSM_TO_STATES(__VA_ARGS__);\
+	#define FSM_TRANSITION_MULTI_ACTIONS(nombre,...)\
+	FSM_TO_STATES(__VA_ARGS__);\
 }\
 Transition nombre( nombre ## _conditions,nombre ## _actions)
 
 #define FSM_TRANSITION(nombre, from, to, condition )\
 Transition nombre(&from,&to,condition)
 
+#define FSM_TRANSITION(nombre, from, to, condition )\
+bool nombre ## _conditions(){\
+	return from.status() && condition (from, to);\
+}\
+void nombre ## _actions(){\
+	from.nextState = false;\
+	to.nextState = true;\
+}\
+Transition nombre( nombre ## _conditions,nombre ## _actions)
+
+#define INSTANT \
+FSM_TRANSITION_CONDITION(Instant){return true;}\
+FSM_TRANSITION_CONDITION_MULTI(Instant){return true;}
 
 #endif
 
 
-	//#include "QueueList/QueueList.h"
-	#include "State.h"
-	#include "Transition.h"
-	#include "SimpleList/SimpleList.h"
+#include "State.h"
+#include "Transition.h"
+#include "SimpleList/SimpleList.h"
 
 
 
-	class FSM  {
+class FSM  {
 
-		friend class Transition;
-		friend class State;
-		private:
-		static SimpleList<Transition*> Transitions;
-		static SimpleList<State*> States;
-		static void add(State* s);
-		static void add(Transition* s);
-		
-		
-		public:
-		static bool AndAll(int numargs, ...);
-		static void ClearAll(int numargs, ...);
-		static void SetAll(int numargs, ...);
-		//static void reserve(int s,int t);
-		static void Run();
-		
-		
-	};
+	friend class Transition;
+	friend class State;
+	private:
+	static SimpleList<Transition*> Transitions;
+	static SimpleList<State*> States;
+	static void add(State* s);
+	static void add(Transition* s);
+	
+	
+	public:
+	static bool AndAll(int numargs, ...);
+	static void ClearAll(int numargs, ...);
+	static void SetAll(int numargs, ...);
+	//static void reserve(int s,int t);
+	static void Run();
+	
+	
+};
 
 
-	#endif
+#endif

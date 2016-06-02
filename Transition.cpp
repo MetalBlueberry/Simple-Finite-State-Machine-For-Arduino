@@ -4,7 +4,7 @@
 #include "SimpleList/SimpleList.h"
 
 
-Transition::Transition(State* from, State* to ,bool (*condition)(State ,State))
+/*Transition::Transition(State* from, State* to ,bool (*condition)(State ,State))
 {
 
 	_from = from;
@@ -16,7 +16,7 @@ Transition::Transition(State* from, State* to ,bool (*condition)(State ,State))
 	_Action = nullptr;
 
 	FSM::add(this);
-}
+}*/
 
 Transition::Transition(bool (*Condition)(),void (*Action)())
 {
@@ -38,18 +38,13 @@ void Transition::Execute()
 		if(_Condition()) {
 			_Action();
 		}
-		}else{
-		if(_from->status() && _condition(*_from,*_to)){
-			_from->nextState = false;
-			_to->nextState = true;
-		}
 	}
 
 }
 
 
 
-
+/*
 bool Transition::CheckForeach(State* array[], unsigned char count)
 {
 	for(int i = 0;i < count ;i++){
@@ -72,4 +67,4 @@ void Transition::ClearForeach(State* array[], unsigned char count)
 	for(int i = 0;i < count ;i++){
 		(array[i])->nextState = false;
 	}
-}
+}*/

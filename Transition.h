@@ -17,22 +17,22 @@ class Transition
 	public:
 	//Transition(State* from,unsigned char fromCount, State* to,unsigned char toCount, bool (*condition)(State*,unsigned char,State*,unsigned char));
 	//Transition(State* from[],unsigned char fromCount, State* to[],unsigned char toCount ,bool (*condition)(State ,State));
-	Transition(State* from, State* to ,bool (*condition)(State ,State));
+	//Transition(State* from, State* to ,bool (*condition)(State ,State));
 	Transition(bool (*Condition)(),void (*Action)());
 	static void now(State* from, State* to);
 	private:
 	void Execute();
-	State* _from;
+	//State* _from;
 	//unsigned char _fromCount;
-	State* _to;
+	//State* _to;
 	//unsigned char _toCount;*/
 	bool (*_Condition)();
 	void (*_Action)();
-	bool (*_condition)(State,State);
+	//bool (*_condition)(State,State);
 
-	bool CheckForeach(State* array[], unsigned char count);
-	void SetForeach(State* array[], unsigned char count);
-	void ClearForeach(State* array[], unsigned char count);
+	//bool CheckForeach(State* array[], unsigned char count);
+	//void SetForeach(State* array[], unsigned char count);
+	//void ClearForeach(State* array[], unsigned char count);
 };
 
 #endif
