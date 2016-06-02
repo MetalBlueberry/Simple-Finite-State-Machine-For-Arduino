@@ -19,7 +19,7 @@ Entes de empezar a funcionar se han de activar manualmente algunas fases utiliza
 Para empezar a ejecutar la maquina hay que llamar al metodo estatico FSM::Run():
 
 *************************************************/
-#define FSM_MACROS
+#define FSM_MACROS 
 
 
 #ifndef FSM_h
@@ -46,44 +46,66 @@ Para empezar a ejecutar la maquina hay que llamar al metodo estatico FSM::Run():
 #define FSM_STATE(nombre, In,Run,Out) \
 State nombre(In,Run,Out)
 #define FSM_INITIAL_STATE(nombre) nombre.nextState = true
-#define FSM_TRANSITION_CONDITION_MULTI(nombre) bool nombre(State* from,unsigned char from_length,State* to,unsigned char to_length)
+#define UNPACK(...) __VA_ARGS__
+
 #define FSM_TRANSITION_CONDITION(funcion) \
-bool funcion ## _aux(State from, State to);\
-bool funcion(State* from,unsigned char from_length,State* to,unsigned char to_length){\
-	funcion ## _aux(from[0],to[0]);\
+bool funcion (State from, State to)
+#define FSM_TRANSITION_CONDITION_MULTI(funcion)\
+bool funcion ()
+
+
+#define NUMARGS(...)  (sizeof((State*[]){__VA_ARGS__})/sizeof(State*))
+	
+#define FSM_PREVIOUS_STATES(...)  (FSM::AndAll(NUMARGS(__VA_ARGS__), __VA_ARGS__))
+#define FSM_FROM_STATES(...)  (FSM::ClearAll(NUMARGS(__VA_ARGS__), __VA_ARGS__))
+#define FSM_TO_STATES(...)  (FSM::SetAll(NUMARGS(__VA_ARGS__), __VA_ARGS__))
+
+#define FSM_TRANSITION_MULTI_CONDITIONS(nombre, condition , ...)\
+bool nombre ## _conditions(){\
+	return FSM_PREVIOUS_STATES(__VA_ARGS__) && condition ();\
 }\
-bool funcion ## _aux(State from, State to)
-#define FSM_TRANSITION_MULTI(nombre,from,from_length,to,to_length,condition)\
-Transition nombre(&from,from_length,&to,to_length,condition)
-#define FSM_TRANSITION(nombre, from, to, condition)\
-Transition nombre(&from,1,&to,1,condition)
-#define FSM_TRANSITION_NOW(from, to)\
-Transition::now(&from,&to)
+void nombre ## _actions(){\
+	FSM_FROM_STATES(__VA_ARGS__)
+	
+#define FSM_TRANSITION_MULTI_ACTIONS(nombre,...)\
+FSM_TO_STATES(__VA_ARGS__);\
+}\
+Transition nombre( nombre ## _conditions,nombre ## _actions)
+
+#define FSM_TRANSITION(nombre, from, to, condition )\
+Transition nombre(&from,&to,condition)
+
+
 #endif
 
 
-//#include "QueueList/QueueList.h"
-#include "State.h"
-#include "Transition.h"
-#include "SimpleList/SimpleList.h"
+	//#include "QueueList/QueueList.h"
+	#include "State.h"
+	#include "Transition.h"
+	#include "SimpleList/SimpleList.h"
 
 
 
-class FSM  {
+	class FSM  {
 
-	friend class Transition;
-	friend class State;
-	private:
-	static SimpleList<Transition*> Transitions;
-	static SimpleList<State*> States;
-	static void add(State* s);
-	static void add(Transition* s);
-	public:
-	//static void reserve(int s,int t);
-	static void Run();
-	
-	
-};
+		friend class Transition;
+		friend class State;
+		private:
+		static SimpleList<Transition*> Transitions;
+		static SimpleList<State*> States;
+		static void add(State* s);
+		static void add(Transition* s);
+		
+		
+		public:
+		static bool AndAll(int numargs, ...);
+		static void ClearAll(int numargs, ...);
+		static void SetAll(int numargs, ...);
+		//static void reserve(int s,int t);
+		static void Run();
+		
+		
+	};
 
 
-#endif
+	#endif

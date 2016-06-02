@@ -16,11 +16,38 @@ void FSM::add(Transition* t){
 	Transitions.push_back(t);
 }
 
-/*void FSM::reserve(int s,int t)
+bool FSM::AndAll(int numargs, ...)
 {
-States.reserve(s);
-Transitions.reserve(t);
-}*/
+	bool total = true;
+	
+	va_list ap;
+	va_start(ap, numargs);
+	while (numargs--)
+	total = total && va_arg(ap, State*)->status();
+	va_end(ap);
+
+	return total;
+}
+
+void FSM::ClearAll(int numargs, ...)
+{
+	va_list ap;
+	va_start(ap, numargs);
+	while (numargs--)
+		va_arg(ap, State*)->nextState = false;
+	va_end(ap);
+}
+
+void FSM::SetAll(int numargs, ...)
+{
+	va_list ap;
+	va_start(ap, numargs);
+	while (numargs--)
+	va_arg(ap, State*)->nextState = true;
+	va_end(ap);
+}
+
+
 
 void FSM::Run()
 {
