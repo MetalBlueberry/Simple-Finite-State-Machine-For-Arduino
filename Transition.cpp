@@ -4,19 +4,7 @@
 #include "SimpleList/SimpleList.h"
 
 
-/*Transition::Transition(State* from, State* to ,bool (*condition)(State ,State))
-{
 
-	_from = from;
-	_to = to;
-
-	_condition = condition;
-
-	_Condition = nullptr;
-	_Action = nullptr;
-
-	FSM::add(this);
-}*/
 
 Transition::Transition(bool (*Condition)(),void (*Action)())
 {
@@ -43,28 +31,3 @@ void Transition::Execute()
 }
 
 
-
-/*
-bool Transition::CheckForeach(State* array[], unsigned char count)
-{
-	for(int i = 0;i < count ;i++){
-		if(!(array[i])->status()){
-			return false;
-		}
-	}
-	return true;
-}
-
-void Transition::SetForeach(State* array[], unsigned char count)
-{
-	for(int i = 0;i < count ;i++){
-		(array[i])->nextState = true;
-	}
-}
-
-void Transition::ClearForeach(State* array[], unsigned char count)
-{
-	for(int i = 0;i < count ;i++){
-		(array[i])->nextState = false;
-	}
-}*/

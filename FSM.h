@@ -4,93 +4,77 @@ Fecha: 12/05/2016
 
 Esta libreria permite programar utilizando la tecnica de FSM de una manera facil y sencilla
 
+This library allows you to design FSM nets in a easy way.
+
 *************************************************/
 
 /**************************************************
-Instrucciones:
-Para crear un estado hay que definir primero las funciones de entrada, ejecucion y salida con el tipo void funcion(State* s);
-En el caso de no necesitar una funcion se puede definir como nullptr.
-Para crear transicciones se puede utilizar 2 formas:
--> El metodo estatico Transition::now(from,to); para generar una transicion en el siguiente ciclo
--> Declarar una transiccion permanente con Transition(State* from,unsigned char fromCount, State* to,unsigned char toCount, bool (*condition)(State*,unsigned char,State*,unsigned char));
-
-Entes de empezar a funcionar se han de activar manualmente algunas fases utilizando la variable de la clase estado "nextState" marcandola como true
-
-Para empezar a ejecutar la maquina hay que llamar al metodo estatico FSM::Run():
+Instructions:
+TODO
 
 *************************************************/
 
 
 
 #ifndef FSM_h
-
-#define FSM_MACROS
 #define  FSM_h
-
-
-//funciones de debug
-#ifdef DEBUG
-#define D(s) (Serial.print(s))
-#define Dln(s) (Serial.println(s))
-#define DFloat(s,n) (Serial.println(s,n))
-#define StartDebug(s) Serial.begin(s);delay(500); Serial.println("debug mode")
-#else
-#define D(s)
-#define Dln(s)
-#define DFloat(s,n)
-#define StartDebug(s)
-#endif
-
-//Definir FSM_MACROS si se quieren utilizar los macros para simplificar la programación
-#ifdef FSM_MACROS
-#define FSM_RUN FSM::Run();
-#define FSM_STATE_FUNCTION(nombre) void nombre (State* s)
-#define FSM_STATE(nombre, In,Run,Out) \
-State nombre(In,Run,Out)
-#define FSM_INITIAL_STATE(nombre) nombre.nextState = true
+//Auxiliary macros, you don't need to use this
 #define UNPACK(...) __VA_ARGS__
-
-#define FSM_TRANSITION_CONDITION(funcion) \
-bool funcion (State from, State to)
-#define FSM_TRANSITION_CONDITION_MULTI(funcion)\
-bool funcion ()
-
-
 #define NUMARGS(...)  (sizeof((State*[]){__VA_ARGS__})/sizeof(State*))
+#define FIRST(...) FIRST_HELPER(__VA_ARGS__, throwaway)
+#define FIRST_HELPER(first, ...) first
 #define FSM_PREVIOUS_STATES(...)  (FSM::AndAll(NUMARGS(__VA_ARGS__), __VA_ARGS__))
 #define FSM_FROM_STATES(...)  (FSM::ClearAll(NUMARGS(__VA_ARGS__), __VA_ARGS__))
 #define FSM_TO_STATES(...)  (FSM::SetAll(NUMARGS(__VA_ARGS__), __VA_ARGS__))
-
-#define FSM_TRANSITION_MULTI_CONDITIONS(nombre, condition , ...)\
-bool nombre ## _conditions(){\
-	return FSM_PREVIOUS_STATES(__VA_ARGS__) && condition ();\
+#define FSM_TRANSITION_MULTI_CONDITIONS(name, condition , from, to , ...)\
+bool name ## _conditions(){\
+	return FSM_PREVIOUS_STATES(__VA_ARGS__) && condition (from,to);\
 }\
-void nombre ## _actions(){\
+void name ## _actions(){\
 	FSM_FROM_STATES(__VA_ARGS__)
 	
-	#define FSM_TRANSITION_MULTI_ACTIONS(nombre,...)\
+#define FSM_TRANSITION_MULTI_ACTIONS(name,...)\
 	FSM_TO_STATES(__VA_ARGS__);\
 }\
-Transition nombre( nombre ## _conditions,nombre ## _actions)
+Transition name( name ## _conditions,name ## _actions)
 
-#define FSM_TRANSITION(nombre, from, to, condition )\
-Transition nombre(&from,&to,condition)
+//Macros
+//Execute the FSM
+#define FSM_RUN FSM::Run()
+//Create a new State Function for use it as In Run or Out
+#define FSM_STATE_FUNCTION(name) void name (State* s)
+//Create a new State
+#define FSM_STATE(name, In,Run,Out) \
+State name(In,Run,Out)
+//Set initial states
+#define FSM_INITIAL_STATE(name) name.nextState = true
+//Create a transition conditions function 
+#define FSM_TRANSITION_CONDITION(function) \
+bool function (State* from, State* to)
 
-#define FSM_TRANSITION(nombre, from, to, condition )\
-bool nombre ## _conditions(){\
-	return from.status() && condition (from, to);\
+
+//create a transition from multiple states to multiple states
+#define FSM_TRANSITION_MULTI(name, condition, from, to)\
+FSM_TRANSITION_MULTI_CONDITIONS(name, condition, FIRST(UNPACK from) , FIRST(UNPACK to), UNPACK from);\
+FSM_TRANSITION_MULTI_ACTIONS(name, UNPACK to);
+
+//create a simple transition from a state to an other
+#define FSM_TRANSITION(name, from, to, condition )\
+bool name ## _conditions(){\
+	return from.status() && condition (&from, &to);\
 }\
-void nombre ## _actions(){\
+void name ## _actions(){\
 	from.nextState = false;\
 	to.nextState = true;\
 }\
-Transition nombre( nombre ## _conditions,nombre ## _actions)
+Transition name( name ## _conditions,name ## _actions)
 
+//Utilities
+//creates an instant transition called Instant
 #define INSTANT \
-FSM_TRANSITION_CONDITION(Instant){return true;}\
-FSM_TRANSITION_CONDITION_MULTI(Instant){return true;}
+FSM_TRANSITION_CONDITION(Instant){return true;}\	
 
-#endif
+
 
 
 #include "State.h"
@@ -114,7 +98,6 @@ class FSM  {
 	static bool AndAll(int numargs, ...);
 	static void ClearAll(int numargs, ...);
 	static void SetAll(int numargs, ...);
-	//static void reserve(int s,int t);
 	static void Run();
 	
 	

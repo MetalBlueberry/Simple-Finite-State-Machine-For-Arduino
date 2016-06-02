@@ -1,6 +1,5 @@
 ﻿
 #include "FSM.h"
-//#include "QueueList/QueueList.h"
 #include "Transition.h"
 #include "SimpleList/SimpleList.h"
 
@@ -52,22 +51,13 @@ void FSM::SetAll(int numargs, ...)
 void FSM::Run()
 {
 
-	//inline iterator begin() { return _internalArray; }
-	//inline iterator end() { return _internalArray + _endPosition; }
 	
 	State** s = States.begin();
 	for (unsigned int i = 0; i < States.size();i++)
 	{
 		s[i]->_lastState = s[i]->_thisState;
 		s[i]->_thisState = s[i]->nextState;
-		//D("Estado ");
-		/*D(s[i]->id);
-		D(":");
-		D(s[i]->_lastState);
-		D(" ");
-		D(s[i]->_thisState);
-		D(" ");
-		Dln(s[i]->nextState);*/
+
 		if(s[i]->_lastState && !s[i]->_thisState){
 			if(s[i]->Out != nullptr){
 				s[i]->Out(s[i]);

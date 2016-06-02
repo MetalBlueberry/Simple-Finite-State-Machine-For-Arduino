@@ -1,0 +1,33 @@
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+State				KEYWORD1	
+Transition			KEYWORD1
+FSM				KEYWORD1
+
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+Instant 			KEYWORD2
+runTime				KEYWORD2
+from				KEYWORD2
+to				KEYWORD2
+
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+FSM_STATE_FUNCTION		LITERAL1
+FSM_STATE 			LITERAL1
+FSM_TRANSITION			LITERAL1
+FSM_TRANSITION_CONDITION	LITERAL1
+FSM_TRANSITION_CONDITION_MULTI	LITERAL1
+FSM_TRANSITION_MULTI		LITERAL1
+
+FSM_INITIAL_STATE		LITERAL1
+FSM_RUN				LITERAL1
+INSTANT 			LITERAL1
