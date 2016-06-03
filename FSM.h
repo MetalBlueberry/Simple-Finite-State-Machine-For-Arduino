@@ -42,10 +42,10 @@ Transition name( name ## _conditions,name ## _actions)
 //Execute the FSM
 #define FSM_RUN FSM::Run()
 //Create a new State Function for use it as In Run or Out
-#define FSM_STATE_FUNCTION(name) void name (State* s)
+#define FSM_STATE_FUNCTION(name) void name (State* from)
 //Create a new State
-#define FSM_STATE(name, In,Run,Out) \
-State name(In,Run,Out)
+#define FSM_STATE(name, In,Run,Out , ...) \
+State name(In,Run,Out ,  ##__VA_ARGS__ )
 //Set initial states
 #define FSM_INITIAL_STATE(name) name.nextState = true
 //Create a transition conditions function 
