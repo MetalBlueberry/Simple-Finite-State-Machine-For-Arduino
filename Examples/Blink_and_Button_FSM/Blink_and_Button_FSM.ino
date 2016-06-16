@@ -35,7 +35,7 @@ FSM_STATE(S5, LedOff, nullptr, nullptr);
 
 //Definir condiciones
 FSM_TRANSITION_CONDITION(Delay1s) {
-  return from->runTime() > 1000;
+  return from.runTime() > 1000;
 }
 FSM_TRANSITION_CONDITION(ButtonDown) {
   return !digitalRead(2);
@@ -65,5 +65,5 @@ void setup() {
 }
 
 void loop() {
-  FSM_RUN;
+  FSM_RUN
 }
