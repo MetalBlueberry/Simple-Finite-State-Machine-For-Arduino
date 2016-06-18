@@ -91,9 +91,9 @@ INSTANT \
 #define FSM_RESET(State) State.nextState = false
 
 
-#include "State.h"
-#include "Transition.h"
-#include "SimpleList/SimpleList.h"
+#include <States/State.h>
+#include <States/Transition.h>
+#include <SimpleList/SimpleList.h>
 
 
 

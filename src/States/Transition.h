@@ -8,8 +8,8 @@ Clase Transition para la libreria FSM
 
 #ifndef Transition_h
 #define Transition_h
-#include "State.h"
-#include "SimpleList/SimpleList.h"
+#include <States/State.h>
+#include <SimpleList/SimpleList.h>
 
 class Transition
 {

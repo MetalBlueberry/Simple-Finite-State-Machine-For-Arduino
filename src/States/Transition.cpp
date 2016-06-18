@@ -1,7 +1,7 @@
-﻿#include "Transition.h"
-#include "State.h"
-#include "FSM.h"
-#include "SimpleList/SimpleList.h"
+﻿#include <States/Transition.h>
+#include <States/State.h>
+#include <FSM.h>
+#include <SimpleList/SimpleList.h>
 
 
 

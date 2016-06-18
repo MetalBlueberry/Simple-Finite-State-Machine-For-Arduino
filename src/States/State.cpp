@@ -1,14 +1,7 @@
 ﻿
 
-#include "State.h"
-#include "FSM.h"
-//#include "SimpleList/SimpleList.h"
-
-#ifdef FSM_CONTROL_DE_TIEMPO
-#include "arduino.h"
-#endif
-
-//unsigned int State::count = 0;
+#include <States/State.h>
+#include <FSM.h>
 
 
 

@@ -1,7 +1,7 @@
 ﻿
-#include "FSM.h"
-#include "Transition.h"
-#include "SimpleList/SimpleList.h"
+#include <FSM.h>
+#include <States/Transition.h>
+#include <SimpleList/SimpleList.h>
 
 //FSM FSM::Instance;
 

@@ -9,7 +9,7 @@ Clase estado para la libreria FSM
 
 #ifndef State_h
 #define  State_h
-#include "arduino.h"
+
 
 class State{
 	friend class FSM;
