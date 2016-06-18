@@ -10,40 +10,33 @@
 
 //unsigned int State::count = 0;
 
-State::State (void (*In)(State*),void (*Run)(State*),void (*Out)(State*),uint8_t id )
+
+
+State::State(void(*In)(State*), void(*Run)(State*), void(*Out)(State*))
 {
 	this->In = In;
 	this->Run = Run;
 	this->Out = Out;
-	this->id = id;
 	this->genericData = nullptr;
-	FSM::add(this);
+	FSM::Instance.add(this);
 }
 
-State::State(void (*In)(State*),void (*Run)(State*),void (*Out)(State*))
+State::State(void(*In)(State*), void(*Run)(State*), void(*Out)(State*), void *genericData)
 {
 	this->In = In;
 	this->Run = Run;
 	this->Out = Out;
-	this->id = 0;
-	this->genericData = nullptr;
-	FSM::add(this);
-}
-
-State::State(void (*In)(State*),void (*Run)(State*),void (*Out)(State*),uint8_t id , void *genericData)
-{
-	this->In = In;
-	this->Run = Run;
-	this->Out = Out;
-	this->id = id;
 	this->genericData = genericData;
-	FSM::add(this);
+	FSM::Instance.add(this);
 }
 
 #ifdef FSM_CONTROL_DE_TIEMPO
 unsigned long State::runTime()
 {
-	return millis()-_runTime;
+	if (FSM::Instance.RunTime == nullptr) {
+		return 0;
+	}
+	return FSM::Instance.RunTime() - _runTime;
 }
 
 

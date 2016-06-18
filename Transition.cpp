@@ -10,7 +10,7 @@ Transition::Transition(bool (*Condition)(),void (*Action)())
 {
 	_Condition = Condition;
 	_Action = Action;
-	FSM::add(this);
+	FSM::Instance.add(this);
 }
 
 void Transition::now(State* from, State* to)

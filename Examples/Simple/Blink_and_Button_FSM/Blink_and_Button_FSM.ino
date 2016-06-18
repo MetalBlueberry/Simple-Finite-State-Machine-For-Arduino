@@ -1,9 +1,13 @@
-//Se va a demostrar el paralelismo
+/*A Button on pin 2 controls the state of pin 12
+   Pin 13 blinks independently
+*/
 
+//Include the library
 #include "FSM.h"
-#define DEBUG
+//Setup FSM with millis time reference
+FSM_SETUP(millis)
 
-
+//Create State's Functions
 FSM_STATE_FUNCTION(Conf) {
   pinMode(13, OUTPUT);
 }
@@ -25,7 +29,7 @@ FSM_STATE_FUNCTION(LedOff) {
   digitalWrite(12, LOW);
 }
 
-//definir estados
+//Define States
 FSM_STATE(S0, Conf, nullptr, nullptr);
 FSM_STATE(S1, On, nullptr, nullptr);
 FSM_STATE(S2, Off, nullptr, nullptr);
@@ -33,9 +37,10 @@ FSM_STATE(S3, ConfLed, nullptr, nullptr);
 FSM_STATE(S4, LedOn, nullptr, nullptr);
 FSM_STATE(S5, LedOff, nullptr, nullptr);
 
-//Definir condiciones
+
+//Define Transition's conditions
 FSM_TRANSITION_CONDITION(Delay1s) {
-  return from.runTime() > 1000;
+  return RUN_TIME > 1000;
 }
 FSM_TRANSITION_CONDITION(ButtonDown) {
   return !digitalRead(2);
@@ -44,12 +49,7 @@ FSM_TRANSITION_CONDITION(ButtonUp) {
   return digitalRead(2);
 }
 
-FSM_TRANSITION_CONDITION(Instant) {
-  return true;
-}
-
-//Crear una transiccion doble desde S0 a S1 y S3
-
+//Define Transitions
 FSM_TRANSITION(T0, S0, S1, Instant);
 FSM_TRANSITION(T1, S1, S2, Delay1s);
 FSM_TRANSITION(T2, S2, S1, Delay1s);
@@ -58,12 +58,14 @@ FSM_TRANSITION(T3, S3, S4, Instant);
 FSM_TRANSITION(T4, S4, S5, ButtonDown);
 FSM_TRANSITION(T5, S5, S4, ButtonUp);
 
-//continuar normalmente
+
 void setup() {
+  //Setup Initial States
   FSM_INITIAL_STATE(S0);
   FSM_INITIAL_STATE(S3);
 }
 
 void loop() {
-  FSM_RUN
+  //Run FSM
+  FSM_RUN;
 }

@@ -32,7 +32,7 @@ bool name ## _conditions(){\
 }\
 void name ## _actions(){\
 	FSM_FROM_STATES(__VA_ARGS__)
-	
+
 #define FSM_TRANSITION_MULTI_ACTIONS(name,...)\
 	FSM_TO_STATES(__VA_ARGS__);\
 }\
@@ -40,7 +40,7 @@ Transition name( name ## _conditions,name ## _actions)
 
 //Macros
 //Execute the FSM
-#define FSM_RUN FSM::Run()
+#define FSM_RUN FSM::Instance.Run()
 //Create a new State Function for use it as In Run or Out
 #define FSM_STATE_FUNCTION(name) void name (State* from)
 //Create a new State
@@ -52,11 +52,13 @@ State name(In,Run,Out ,  ##__VA_ARGS__ )
 #define FSM_TRANSITION_CONDITION(function) \
 bool function (State* from, State* to)
 
+#define RUN_TIME from->runTime()
 
 //create a transition from multiple states to multiple states
-#define FSM_TRANSITION_MULTI(name, condition, from, to)\
+#define FSM_TRANSITION_MULTI(name, from, to, condition)\
 FSM_TRANSITION_MULTI_CONDITIONS(name, condition, FIRST(UNPACK from) , FIRST(UNPACK to), UNPACK from);\
 FSM_TRANSITION_MULTI_ACTIONS(name, UNPACK to);
+
 
 //create a simple transition from a state to an other
 #define FSM_TRANSITION(name, from, to, condition )\
@@ -64,17 +66,29 @@ bool name ## _conditions(){\
 	return from.status() && condition (&from, &to);\
 }\
 void name ## _actions(){\
-	from.nextState = false;\
-	to.nextState = true;\
+	FSM_RESET(from);\
+	FSM_SET(to);\
 }\
 Transition name( name ## _conditions,name ## _actions)
 
 //Utilities
-//creates an instant transition called Instant
+
 #define INSTANT \
 FSM_TRANSITION_CONDITION(Instant){return true;}\	
 
+#define GET_MACRO(_0,_1,NAME,...) NAME(_1)
+#define FSM_SETUP(...) GET_MACRO(_0, ##__VA_ARGS__,SETUP_FSM_1,SETUP_FSM_0)
 
+#define SETUP_FSM_0(...) \
+FSM FSM::Instance; \
+INSTANT \
+
+#define SETUP_FSM_1(Function) \
+FSM FSM::Instance(Function); \
+INSTANT \
+
+#define FSM_SET(State) State.nextState = true
+#define FSM_RESET(State) State.nextState = false
 
 
 #include "State.h"
@@ -83,24 +97,29 @@ FSM_TRANSITION_CONDITION(Instant){return true;}\
 
 
 
-class FSM  {
+class FSM {
 
 	friend class Transition;
 	friend class State;
-	private:
-	static SimpleList<Transition*> Transitions;
-	static SimpleList<State*> States;
-	static void add(State* s);
-	static void add(Transition* s);
+private:
+	SimpleList<Transition*> Transitions;
+	SimpleList<State*> States;
+	void add(State* s);
+	void add(Transition* s);
 	
-	
-	public:
+
+public:
+	static FSM Instance;
+	FSM();
+	FSM(unsigned long(*RunTime)());
+	unsigned long(*RunTime)() = nullptr;
 	static bool AndAll(int numargs, ...);
 	static void ClearAll(int numargs, ...);
 	static void SetAll(int numargs, ...);
-	static void Run();
-	
-	
+	void Run();
+
+
+
 };
 
 

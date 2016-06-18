@@ -3,9 +3,18 @@
 #include "Transition.h"
 #include "SimpleList/SimpleList.h"
 
-SimpleList<Transition*> FSM::Transitions;
-SimpleList<State*> FSM::States;
+//FSM FSM::Instance;
 
+FSM::FSM() {
+	SimpleList<Transition*> Transitions;
+	SimpleList<State*> States;
+}
+FSM::FSM(unsigned long(*RunTime)())
+{
+	SimpleList<Transition*> Transitions;
+	SimpleList<State*> States;
+	this->RunTime = RunTime;
+}
 void FSM::add(State* s)
 {
 	States.push_back(s);
@@ -50,8 +59,6 @@ void FSM::SetAll(int numargs, ...)
 
 void FSM::Run()
 {
-
-	
 	State** s = States.begin();
 	for (unsigned int i = 0; i < States.size();i++)
 	{

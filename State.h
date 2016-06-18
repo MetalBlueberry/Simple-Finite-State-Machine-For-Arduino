@@ -18,13 +18,11 @@ class State{
 	
 	public:
 	void *genericData; 
-	uint8_t id;
+	//uint8_t id;
 	bool nextState = false;
 	bool status();
 	
-	State( void (*In)(State*),void (*Run)(State*),void (*Out)(State*),uint8_t id , void *genericData);
-
-	State( void (*In)(State*),void (*Run)(State*),void (*Out)(State*),uint8_t id );
+	State( void (*In)(State*),void (*Run)(State*),void (*Out)(State*), void *genericData);
 	
 	State( void (*In)(State*),void (*Run)(State*),void (*Out)(State*));
 	#ifdef FSM_CONTROL_DE_TIEMPO
@@ -40,7 +38,6 @@ class State{
 	unsigned long _runTime;
 	void InternalIn();
 	#endif
-	
 	void (*In)(State*) = nullptr;
 	void (*Run)(State*) = nullptr;
 	void (*Out)(State*) = nullptr;
