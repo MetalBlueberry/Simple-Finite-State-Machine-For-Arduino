@@ -5,7 +5,7 @@ Fecha: 12/05/2016
 Clase estado para la libreria FSM
 
 *************************************************/
-#define FSM_CONTROL_DE_TIEMPO
+//#define FSM_CONTROL_DE_TIEMPO
 
 #ifndef State_h
 #define  State_h
@@ -14,7 +14,6 @@ Clase estado para la libreria FSM
 class State{
 	friend class FSM;
 	friend class Transition;
-
 	
 	public:
 	void *genericData; 
@@ -38,6 +37,7 @@ class State{
 	unsigned long _runTime;
 	void InternalIn();
 	#endif
+
 	void (*In)(State*) = nullptr;
 	void (*Run)(State*) = nullptr;
 	void (*Out)(State*) = nullptr;

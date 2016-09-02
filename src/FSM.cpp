@@ -37,6 +37,21 @@ bool FSM::AndAll(int numargs, ...)
 	return total;
 }
 
+bool FSM::AnyFrom(int numargs, ...)
+{
+	bool total = false;
+
+	va_list ap;
+	va_start(ap, numargs);
+	while (numargs--) {
+		total = total || va_arg(ap, State*)->status();
+		if(total) break;
+	}
+	va_end(ap);
+
+	return total;
+}
+
 void FSM::ClearAll(int numargs, ...)
 {
 	va_list ap;

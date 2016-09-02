@@ -23,12 +23,17 @@ TODO
 #define NUMARGS(...)  (sizeof((State*[]){__VA_ARGS__})/sizeof(State*))
 #define FIRST(...) FIRST_HELPER(__VA_ARGS__, throwaway)
 #define FIRST_HELPER(first, ...) first
+#define FSM_ANY_PREVIOUS_STATES(...)  (FSM::AnyFrom(NUMARGS(__VA_ARGS__), __VA_ARGS__))
 #define FSM_PREVIOUS_STATES(...)  (FSM::AndAll(NUMARGS(__VA_ARGS__), __VA_ARGS__))
 #define FSM_FROM_STATES(...)  (FSM::ClearAll(NUMARGS(__VA_ARGS__), __VA_ARGS__))
 #define FSM_TO_STATES(...)  (FSM::SetAll(NUMARGS(__VA_ARGS__), __VA_ARGS__))
-#define FSM_TRANSITION_MULTI_CONDITIONS(name, condition , from, to , ...)\
+#define FSM_TRANSITION_MULTI_CONDITIONS(name, condition , from, to , any, ...)\
 bool name ## _conditions(){\
-	return FSM_PREVIOUS_STATES(__VA_ARGS__) && condition (from,to);\
+if(any){\
+	return FSM_ANY_PREVIOUS_STATES(__VA_ARGS__) && condition(from, to); \
+}else {\
+	return FSM_PREVIOUS_STATES(__VA_ARGS__) && condition(from, to); \
+}\
 }\
 void name ## _actions(){\
 	FSM_FROM_STATES(__VA_ARGS__)
@@ -55,10 +60,9 @@ bool function (State* from, State* to)
 #define RUN_TIME from->runTime()
 
 //create a transition from multiple states to multiple states
-#define FSM_TRANSITION_MULTI(name, from, to, condition)\
-FSM_TRANSITION_MULTI_CONDITIONS(name, condition, FIRST(UNPACK from) , FIRST(UNPACK to), UNPACK from);\
+#define FSM_TRANSITION_MULTI(name, from, to, condition, any)\
+FSM_TRANSITION_MULTI_CONDITIONS(name, condition, FIRST(UNPACK from) , FIRST(UNPACK to), any ,UNPACK from);\
 FSM_TRANSITION_MULTI_ACTIONS(name, UNPACK to);
-
 
 //create a simple transition from a state to an other
 #define FSM_TRANSITION(name, from, to, condition )\
@@ -114,6 +118,7 @@ public:
 	FSM(unsigned long(*RunTime)());
 	unsigned long(*RunTime)() = nullptr;
 	static bool AndAll(int numargs, ...);
+	static bool AnyFrom(int numargs, ...);
 	static void ClearAll(int numargs, ...);
 	static void SetAll(int numargs, ...);
 	void Run();
