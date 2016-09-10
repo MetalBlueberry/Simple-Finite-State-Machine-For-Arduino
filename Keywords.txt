@@ -5,6 +5,7 @@
 State				KEYWORD1	
 Transition			KEYWORD1
 FSM				KEYWORD1
+FSM_MACROS			KEYWORD1
 
 
 #######################################
