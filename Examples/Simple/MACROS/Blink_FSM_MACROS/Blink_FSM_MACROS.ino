@@ -1,5 +1,14 @@
+/**************************************************
+  Autor: Víctor Pérez Domingo
+  Fecha: 12/05/2016
+
+  Pin 13 blinks 
+*************************************************/
+
 //Include the library
-#include "FSM.h"
+#include <FSM.h>
+//Include the macros
+#include <FSM_MACROS.h>
 //Setup FSM with millis time reference
 FSM_SETUP(millis)
 
@@ -37,6 +46,6 @@ void setup() {
 
 void loop() {
   //Run FSM
-  FSM_RUN;
+  FSM_RUN();
 
 }
