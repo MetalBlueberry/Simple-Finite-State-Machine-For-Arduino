@@ -1,4 +1,12 @@
-﻿
+﻿/**************************************************
+Autor: Víctor Pérez Domingo
+Fecha: 12/05/2016
+
+Esta libreria permite programar utilizando la tecnica de FSM de una manera facil y sencilla
+
+This library allows you to design FSM nets in a easy way.
+
+*************************************************/
 #include <FSM.h>
 #include <States/Transition.h>
 #include <SimpleList/SimpleList.h>

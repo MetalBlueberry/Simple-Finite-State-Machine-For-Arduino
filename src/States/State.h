@@ -5,11 +5,13 @@ Fecha: 12/05/2016
 Clase estado para la libreria FSM
 
 *************************************************/
-//#define FSM_CONTROL_DE_TIEMPO
+
 
 #ifndef State_h
 #define  State_h
 
+//Comment line below to disable time control for individual states
+#define FSM_CONTROL_DE_TIEMPO
 
 class State{
 
@@ -18,26 +20,25 @@ class State{
 	
 	public:
 	void *genericData; 
-	//uint8_t id;
 	bool nextState = false;
 	bool status();
 	
 	State( void (*In)(State*),void (*Run)(State*),void (*Out)(State*), void *genericData);
 	
 	State( void (*In)(State*),void (*Run)(State*),void (*Out)(State*));
-	#ifdef FSM_CONTROL_DE_TIEMPO
+        #ifdef FSM_CONTROL_DE_TIEMPO
 	/**
 	* Tiempo en ms desde el inicio del estado
 	*/
 	unsigned long runTime();
-	#endif
+        #endif
 	private:
-	//static unsigned int count;
+        static unsigned int count;
 	
-	#ifdef FSM_CONTROL_DE_TIEMPO
+        #ifdef FSM_CONTROL_DE_TIEMPO
 	unsigned long _runTime;
 	void InternalIn();
-	#endif
+        #endif
 
 	void (*In)(State*) = nullptr;
 	void (*Run)(State*) = nullptr;

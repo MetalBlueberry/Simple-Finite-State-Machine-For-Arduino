@@ -13,14 +13,15 @@ Clase Transition para la libreria FSM
 
 class Transition
 {
-	friend class FSM;
-	public:
-	Transition(bool (*Condition)(),void (*Action)());
-	static void now(State* from, State* to);
-	private:
-	void Execute();
-	bool (*_Condition)();
-	void (*_Action)();
+    friend class FSM;
+public:
+    Transition(bool (*Condition)(),void (*Action)());
+    static void now(State* from, State* to);
+    bool Condition();
+private:
+    void Execute();
+    bool (*_Condition)();
+    void (*_Action)();
 
 };
 

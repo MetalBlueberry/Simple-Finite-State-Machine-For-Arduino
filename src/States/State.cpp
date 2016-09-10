@@ -1,4 +1,12 @@
-﻿#include <States/State.h>
+﻿/**************************************************
+Autor: Víctor Pérez Domingo
+Fecha: 12/05/2016
+
+Clase estado para la libreria FSM
+
+*************************************************/
+
+#include <States/State.h>
 #include <FSM.h>
 
 
@@ -34,6 +42,7 @@ void State::InternalIn()
     _runTime = millis();
 }
 #endif
+
 bool State::status()
 {
     return _thisState && _lastState;
