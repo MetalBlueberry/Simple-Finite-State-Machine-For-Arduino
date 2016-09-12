@@ -35,10 +35,6 @@ private:
     SimpleList<State*> States;
     void add(State* s);
     void add(Transition* s);
-    static bool AndAll(int numargs, ...);
-    static bool AnyFrom(int numargs, ...);
-    static void ClearAll(int numargs, ...);
-    static void SetAll(int numargs, ...);
     FSM();
     FSM(unsigned long(*RunTime)());
 
@@ -49,6 +45,10 @@ public:
 
     void Run();
 
+    static bool AndAll(int numargs, ...);
+    static bool AnyFrom(int numargs, ...);
+    static void ClearAll(int numargs, ...);
+    static void SetAll(int numargs, ...);
 
 };
 
