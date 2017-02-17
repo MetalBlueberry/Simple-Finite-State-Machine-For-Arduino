@@ -3,5 +3,5 @@ void setup() {
 }
 
 void loop() {
-  FSM_RUN;
+  FSM_RUN();
 }

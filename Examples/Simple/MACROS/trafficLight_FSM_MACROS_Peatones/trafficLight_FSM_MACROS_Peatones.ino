@@ -1,4 +1,5 @@
 #include <FSM.h>
+#include <FSM_MACROS.h>
 FSM_SETUP(millis)
 
 class RGB {
