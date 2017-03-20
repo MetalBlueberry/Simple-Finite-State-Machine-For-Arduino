@@ -2,13 +2,13 @@
 
 #ifndef _SIMPLELIST_h
 #define _SIMPLELIST_h
-
+/*
 #if defined(ARDUINO) && ARDUINO >= 100
 #include "Arduino.h"
 #else
 #include "WProgram.h"
 #endif
-
+*/
 #ifndef NULL
 #define NULL 0
 #endif

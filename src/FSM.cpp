@@ -2,16 +2,14 @@
 Autor: Víctor Pérez Domingo
 Fecha: 12/05/2016
 
-Esta libreria permite programar utilizando la tecnica de FSM de una manera facil y sencilla
+Esta libreria permite programar utilizando la técnica de FSM de una manera fácil y sencilla
 
-This library allows you to design FSM nets in a easy way.
+This library allows you to design FSM nets in an easy way.
 
 *************************************************/
 #include <FSM.h>
 #include <States/Transition.h>
 #include <SimpleList/SimpleList.h>
-
-//FSM FSM::Instance;
 
 FSM::FSM() {
 	SimpleList<Transition*> Transitions;
@@ -30,6 +28,10 @@ void FSM::add(State* s)
 void FSM::add(Transition* t){
 	
 	Transitions.push_back(t);
+}
+
+long FSM::RunTimeNull(){
+	return -1;
 }
 
 bool FSM::AndAll(int numargs, ...)
@@ -78,8 +80,6 @@ void FSM::SetAll(int numargs, ...)
 	va_end(ap);
 }
 
-
-
 void FSM::Run()
 {
 	State** s = States.begin();
@@ -119,9 +119,4 @@ void FSM::Run()
 	{
 		t[i]->Execute();
 	}
-
-
-
-
-	
 }

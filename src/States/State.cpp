@@ -39,7 +39,7 @@ unsigned long State::runTime()
 
 void State::InternalIn()
 {
-    _runTime = millis();
+    _runTime = FSM::Instance.RunTime();
 }
 #endif
 

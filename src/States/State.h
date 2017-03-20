@@ -1,5 +1,5 @@
 /**************************************************
-Autor: Víctor Pérez Domingo
+Autor: Vï¿½ctor Pï¿½rez Domingo
 Fecha: 12/05/2016
 
 Clase estado para la libreria FSM
@@ -19,7 +19,10 @@ class State{
 	friend class Transition;
 	
 	public:
+	//Puntero generico para poder pasar datos personalizados a cada estado
+	//FunciÃ³n todavia en desarrollo
 	void *genericData; 
+
 	bool nextState = false;
 	bool status();
 	
@@ -27,10 +30,8 @@ class State{
 	
 	State( void (*In)(State*),void (*Run)(State*),void (*Out)(State*));
         #ifdef FSM_CONTROL_DE_TIEMPO
-	/**
-	* Tiempo en ms desde el inicio del estado
-	*/
-	unsigned long runTime();
+		//Tiempo en ms desde el inicio del estado
+		unsigned long runTime();
         #endif
 	private:
         static unsigned int count;

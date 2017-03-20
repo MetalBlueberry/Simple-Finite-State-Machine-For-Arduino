@@ -1,5 +1,5 @@
 /**************************************************
-Autor: Víctor Pérez Domingo
+Autor: Vï¿½ctor Pï¿½rez Domingo
 Fecha: 12/05/2016
 
 Esta libreria permite programar utilizando la tecnica de FSM de una manera facil y sencilla
@@ -60,6 +60,7 @@ State name(In,Run,Out ,  ##__VA_ARGS__ )
 bool function (State* from, State* to)
 
 #define RUN_TIME from->runTime()
+#define CUSTOM_DATA(dataType) dataType * data = static_cast< dataType *> (from->genericData)
 
 //create a transition from multiple states to multiple states
 #define FSM_TRANSITION_MULTI(name, from, to, condition, any)\
